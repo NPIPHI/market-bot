@@ -2,11 +2,11 @@ import market_data
 from keras import models
 from keras import layers
 import numpy as np
-from normalize import chunck, normalize
+from ignore.normalize import chunck, normalize
 
 
 def train_model(ticker, start, end, period):
-    data = market_data.download(ticker, start, end)
+    data = market_data.get_data(ticker, start, end)
 
     train_count = int((len(data) - period) * 0.9)
     test_count = len(data) - period - train_count

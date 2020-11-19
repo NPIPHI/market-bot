@@ -1,6 +1,5 @@
 import market_data
-from keras import models
-from normalize import chunck, normalize
+from ignore.normalize import chunck, normalize
 from dateutil.parser import parse
 from datetime import datetime, timedelta
 
@@ -25,7 +24,7 @@ def padded_market(ticker, start_date, end_date, leftpad, rightpad):
     end = parse(end_date)
     ybegin = begin - timedelta(days=leftpad * 2 + 7)
     yend = end + timedelta(days=rightpad * 2 + 7)
-    market = market_data.download(ticker, str(ybegin.date()), str(yend.date()))
+    market = market_data.get_data(ticker, str(ybegin.date()), str(yend.date()))
     left = 0
     right = len(market)
     while True:
