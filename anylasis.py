@@ -8,15 +8,18 @@ import market_data
 
 plt.style.use("bmh")
 
-
 def main():
     df, close_scalar, scalar = market_data.get_ta_data("SPY", "2010-01-01", "2015-01-01")
     n_per_in = 90
     n_per_out = 10
-    df = df[0:600]
+    df = df[0:800]
     model = get_model(df.shape[1], n_per_in, n_per_out)
+
+    # train a new model
     # res = train_model(model, df)
     # save_model(model, "models/spy")
+
+    # use a pre trained model
     model = load_model("models/spy")
 
     predicted = validator(model, df, close_scalar, n_per_in, n_per_out)
