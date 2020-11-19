@@ -1,3 +1,5 @@
 models
 tickerCache
 venv
+.idea
+__pycache__

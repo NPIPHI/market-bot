@@ -3,13 +3,13 @@ from keras import models
 from keras import layers
 import numpy as np
 from normalize import chunck, normalize
-import matplotlib.pyplot as plt
+
 
 def train_model(ticker, start, end, period):
     data = market_data.download(ticker, start, end)
 
-    train_count = int(len(data) * 0.9)
-    test_count = len(data) - train_count - period
+    train_count = int((len(data) - period) * 0.9)
+    test_count = len(data) - period - train_count
 
     gains = np.ndarray((train_count+test_count,))
     train_pasts = np.ndarray((train_count, period, data.shape[1]))
@@ -34,14 +34,16 @@ def train_model(ticker, start, end, period):
 
     network = models.Sequential()
     network.add(layers.Conv1D(32, (16,), activation="relu", input_shape=(period, 7)))
+    network.add(layers.MaxPool1D())
     network.add(layers.Flatten())
+    # network.add(layers.Flatten(input_shape=(period, 7)))
     network.add(layers.Dense(64, activation="relu"))
     network.add(layers.Dense(64, activation="relu"))
     network.add(layers.Dense(1, activation="sigmoid"))
     network.compile(optimizer="rmsprop", loss="binary_crossentropy", metrics=["accuracy"])
 
-
     network.fit(train_pasts, train_gains, epochs=30)
-    print(network.evaluate(test_pasts,test_gains))
+
+    print(network.evaluate(test_pasts, test_gains))
 
     return network

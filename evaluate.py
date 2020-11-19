@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 
 
 def evaluate(model, ticker, start_date, end_date, threashold=0.5):
-    # model prediction, just hold, perfect performance
     period = model.input_shape[1]
 
     market = padded_market(ticker, start_date, end_date, period, 1)
